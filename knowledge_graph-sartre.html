@@ -1,0 +1,127 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 1200px;
+                 background-color: #222222;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"font": {"color": "white"}, "group": "Work", "id": "Existentialism Is A Humanism", "label": "Existentialism Is A Humanism", "shape": "dot", "title": "Work"}, {"font": {"color": "white"}, "group": "Person", "id": "Fidel Castro", "label": "Fidel Castro", "shape": "dot", "title": "Person"}, {"font": {"color": "white"}, "group": "Concept", "id": "Bad Faith", "label": "Bad Faith", "shape": "dot", "title": "Concept"}, {"font": {"color": "white"}, "group": "Institution", "id": "Lyc\u00e9e Pasteur", "label": "Lyc\u00e9e Pasteur", "shape": "dot", "title": "Institution"}, {"font": {"color": "white"}, "group": "Event", "id": "World War Ii", "label": "World War Ii", "shape": "dot", "title": "Event"}, {"font": {"color": "white"}, "group": "Person", "id": "Pierre Laval", "label": "Pierre Laval", "shape": "dot", "title": "Person"}, {"font": {"color": "white"}, "group": "Institution", "id": "Lyc\u00e9e Condorcet", "label": "Lyc\u00e9e Condorcet", "shape": "dot", "title": "Institution"}, {"font": {"color": "white"}, "group": "Person", "id": "Charles Schweitzer", "label": "Charles Schweitzer", "shape": "dot", "title": "Person"}, {"font": {"color": "white"}, "group": "Person", "id": "Georges Canguilhem", "label": "Georges Canguilhem", "shape": "dot", "title": "Person"}, {"font": {"color": "white"}, "group": "Concept", "id": "Nothingness", "label": "Nothingness", "shape": "dot", "title": "Concept"}, {"font": {"color": "white"}, "group": "Person", "id": "Martin Heidegger", "label": "Martin Heidegger", "shape": "dot", "title": "Person"}, {"font": {"color": "white"}, "group": "Person", "id": "Jean-Paul Sartre", "label": "Jean-Paul Sartre", "shape": "dot", "title": "Person"}, {"font": {"color": "white"}, "group": "Concept", "id": "Epistemology", "label": "Epistemology", "shape": "dot", "title": "Concept"}, {"font": {"color": "white"}, "group": "Work", "id": "Critique Of Dialectical Reason", "label": "Critique Of Dialectical Reason", "shape": "dot", "title": "Work"}, {"font": {"color": "white"}, "group": "Philosophy", "id": "Phenomenology", "label": "Phenomenology", "shape": "dot", "title": "Philosophy"}, {"font": {"color": "white"}, "group": "Person", "id": "Simone De Beauvoir", "label": "Simone De Beauvoir", "shape": "dot", "title": "Person"}, {"font": {"color": "white"}, "group": "Work", "id": "The Words", "label": "The Words", "shape": "dot", "title": "Work"}, {"font": {"color": "white"}, "group": "Concept", "id": "Consciousness", "label": "Consciousness", "shape": "dot", "title": "Concept"}, {"font": {"color": "white"}, "group": "Person", "id": "Anne-Marie Schweitzer", "label": "Anne-Marie Schweitzer", "shape": "dot", "title": "Person"}, {"font": {"color": "white"}, "group": "Concept", "id": "Transcendence Of The Ego", "label": "Transcendence Of The Ego", "shape": "dot", "title": "Concept"}, {"font": {"color": "white"}, "group": "Concept", "id": "Neocolonialism", "label": "Neocolonialism", "shape": "dot", "title": "Concept"}, {"font": {"color": "white"}, "group": "Person", "id": "General Otto Von St\u00fclpnagel", "label": "General Otto Von St\u00fclpnagel", "shape": "dot", "title": "Person"}, {"font": {"color": "white"}, "group": "Work", "id": "Being And Nothingness", "label": "Being And Nothingness", "shape": "dot", "title": "Work"}, {"font": {"color": "white"}, "group": "Concept", "id": "Political Philosophy", "label": "Political Philosophy", "shape": "dot", "title": "Concept"}, {"font": {"color": "white"}, "group": "Person", "id": "General George C. Marshall", "label": "General George C. Marshall", "shape": "dot", "title": "Person"}, {"font": {"color": "white"}, "group": "Place", "id": "P\u00e8re-Lachaise Cemetery", "label": "P\u00e8re-Lachaise Cemetery", "shape": "dot", "title": "Place"}, {"font": {"color": "white"}, "group": "Work", "id": "Anti-Semite And Jew", "label": "Anti-Semite And Jew", "shape": "dot", "title": "Work"}, {"font": {"color": "white"}, "group": "Person", "id": "Marcel D\u00e9at", "label": "Marcel D\u00e9at", "shape": "dot", "title": "Person"}, {"font": {"color": "white"}, "group": "Person", "id": "Charles Lindbergh", "label": "Charles Lindbergh", "shape": "dot", "title": "Person"}, {"font": {"color": "white"}, "group": "Place", "id": "Paris, France", "label": "Paris, France", "shape": "dot", "title": "Place"}, {"font": {"color": "white"}, "group": "Work", "id": "L\u0027Existentialisme Est Un Humanisme", "label": "L\u0027Existentialisme Est Un Humanisme", "shape": "dot", "title": "Work"}, {"font": {"color": "white"}, "group": "Philosophy", "id": "Western Marxism", "label": "Western Marxism", "shape": "dot", "title": "Philosophy"}, {"font": {"color": "white"}, "group": "Person", "id": "Henri Bergson", "label": "Henri Bergson", "shape": "dot", "title": "Person"}, {"font": {"color": "white"}, "group": "Person", "id": "Che Guevara", "label": "Che Guevara", "shape": "dot", "title": "Person"}, {"font": {"color": "white"}, "group": "Award", "id": "Nobel Prize For Literature", "label": "Nobel Prize For Literature", "shape": "dot", "title": "Award"}, {"font": {"color": "white"}, "group": "Person", "id": "Alexandre Koj\u00e8ve", "label": "Alexandre Koj\u00e8ve", "shape": "dot", "title": "Person"}, {"font": {"color": "white"}, "group": "Place", "id": "Cimeti\u00e8re Du Montparnasse", "label": "Cimeti\u00e8re Du Montparnasse", "shape": "dot", "title": "Place"}, {"font": {"color": "white"}, "group": "Person", "id": "Louis-Ferdinand C\u00e9line", "label": "Louis-Ferdinand C\u00e9line", "shape": "dot", "title": "Person"}, {"font": {"color": "white"}, "group": "Concept", "id": "Hell Is Other People", "label": "Hell Is Other People", "shape": "dot", "title": "Concept"}, {"font": {"color": "white"}, "group": "Work", "id": "The Flies", "label": "The Flies", "shape": "dot", "title": "Work"}, {"font": {"color": "white"}, "group": "Work", "id": "Black Orpheus", "label": "Black Orpheus", "shape": "dot", "title": "Work"}, {"font": {"color": "white"}, "group": "Work", "id": "Barion\u00e0, Fils Du Tonnerre", "label": "Barion\u00e0, Fils Du Tonnerre", "shape": "dot", "title": "Work"}, {"font": {"color": "white"}, "group": "Person", "id": "Maurice Merleau-Ponty", "label": "Maurice Merleau-Ponty", "shape": "dot", "title": "Person"}, {"font": {"color": "white"}, "group": "Concept", "id": "Metaphysics", "label": "Metaphysics", "shape": "dot", "title": "Concept"}, {"font": {"color": "white"}, "group": "Work", "id": "L\u0027Image Dans La Vie Psychologique: R\u00f4le Et Nature", "label": "L\u0027Image Dans La Vie Psychologique: R\u00f4le Et Nature", "shape": "dot", "title": "Work"}, {"font": {"color": "white"}, "group": "Person", "id": "Raymond Aron", "label": "Raymond Aron", "shape": "dot", "title": "Person"}, {"font": {"color": "white"}, "group": "Work", "id": "The Wretched Of The Earth", "label": "The Wretched Of The Earth", "shape": "dot", "title": "Work"}, {"font": {"color": "white"}, "group": "Person", "id": "Andr\u00e9 Malraux", "label": "Andr\u00e9 Malraux", "shape": "dot", "title": "Person"}, {"font": {"color": "white"}, "group": "Person", "id": "Emmanuel Levinas", "label": "Emmanuel Levinas", "shape": "dot", "title": "Person"}, {"font": {"color": "white"}, "group": "Concept", "id": "Existence Precedes Essence", "label": "Existence Precedes Essence", "shape": "dot", "title": "Concept"}, {"font": {"color": "white"}, "group": "Philosophy", "id": "Existentialism", "label": "Existentialism", "shape": "dot", "title": "Philosophy"}, {"font": {"color": "white"}, "group": "Work", "id": "The Roads To Freedom", "label": "The Roads To Freedom", "shape": "dot", "title": "Work"}, {"font": {"color": "white"}, "group": "Organization", "id": "Socialisme Et Libert\u00e9", "label": "Socialisme Et Libert\u00e9", "shape": "dot", "title": "Organization"}, {"font": {"color": "white"}, "group": "Concept", "id": "Ontology", "label": "Ontology", "shape": "dot", "title": "Concept"}, {"font": {"color": "white"}, "group": "Work", "id": "Les Temps Modernes", "label": "Les Temps Modernes", "shape": "dot", "title": "Work"}, {"font": {"color": "white"}, "group": "Philosophy", "id": "Continental Philosophy", "label": "Continental Philosophy", "shape": "dot", "title": "Philosophy"}, {"font": {"color": "white"}, "group": "Work", "id": "L\u0027Anthologie De La Nouvelle Po\u00e9sie N\u00e8gre Et Malgache", "label": "L\u0027Anthologie De La Nouvelle Po\u00e9sie N\u00e8gre Et Malgache", "shape": "dot", "title": "Work"}, {"font": {"color": "white"}, "group": "Institution", "id": "\u00c9cole Normale Sup\u00e9rieure", "label": "\u00c9cole Normale Sup\u00e9rieure", "shape": "dot", "title": "Institution"}, {"font": {"color": "white"}, "group": "Institution", "id": "Lyc\u00e9e De Laon", "label": "Lyc\u00e9e De Laon", "shape": "dot", "title": "Institution"}, {"font": {"color": "white"}, "group": "Person", "id": "Andr\u00e9 Gide", "label": "Andr\u00e9 Gide", "shape": "dot", "title": "Person"}, {"font": {"color": "white"}, "group": "Work", "id": "L\u0027\u00catre Et Le N\u00e9ant", "label": "L\u0027\u00catre Et Le N\u00e9ant", "shape": "dot", "title": "Work"}, {"font": {"color": "white"}, "group": "Institution", "id": "Lyc\u00e9e De Le Havre", "label": "Lyc\u00e9e De Le Havre", "shape": "dot", "title": "Institution"}, {"font": {"color": "white"}, "group": "Person", "id": "Jean-Baptiste Sartre", "label": "Jean-Baptiste Sartre", "shape": "dot", "title": "Person"}, {"font": {"color": "white"}, "group": "Work", "id": "The Family Idiot", "label": "The Family Idiot", "shape": "dot", "title": "Work"}, {"font": {"color": "white"}, "group": "Concept", "id": "The Imaginary", "label": "The Imaginary", "shape": "dot", "title": "Concept"}, {"font": {"color": "white"}, "group": "Philosophy", "id": "Anarchism", "label": "Anarchism", "shape": "dot", "title": "Philosophy"}, {"font": {"color": "white"}, "group": "Concept", "id": "Literature", "label": "Literature", "shape": "dot", "title": "Concept"}, {"font": {"color": "white"}, "group": "Award", "id": "L\u00e9gion D\u0027Honneur", "label": "L\u00e9gion D\u0027Honneur", "shape": "dot", "title": "Award"}, {"font": {"color": "white"}, "group": "Concept", "id": "Self-Consciousness", "label": "Self-Consciousness", "shape": "dot", "title": "Concept"}, {"font": {"color": "white"}, "group": "Concept", "id": "Ethics", "label": "Ethics", "shape": "dot", "title": "Concept"}, {"font": {"color": "white"}, "group": "Person", "id": "Albert Camus", "label": "Albert Camus", "shape": "dot", "title": "Person"}, {"font": {"color": "white"}, "group": "Disease", "id": "Pulmonary Edema", "label": "Pulmonary Edema", "shape": "dot", "title": "Disease"}, {"font": {"color": "white"}, "group": "Concept", "id": "Situation", "label": "Situation", "shape": "dot", "title": "Concept"}, {"font": {"color": "white"}, "group": "Work", "id": "No Exit", "label": "No Exit", "shape": "dot", "title": "Work"}, {"font": {"color": "white"}, "group": "Person", "id": "Edmund Husserl", "label": "Edmund Husserl", "shape": "dot", "title": "Person"}, {"font": {"color": "white"}, "group": "Person", "id": "Gustave Lanson", "label": "Gustave Lanson", "shape": "dot", "title": "Person"}, {"font": {"color": "white"}, "group": "Event", "id": "May 1968 Strikes", "label": "May 1968 Strikes", "shape": "dot", "title": "Event"}, {"font": {"color": "white"}, "group": "Person", "id": "Frantz Fanon", "label": "Frantz Fanon", "shape": "dot", "title": "Person"}]);
+                  edges = new vis.DataSet([{"arrows": "to", "from": "Jean-Paul Sartre", "label": "partner", "to": "Simone De Beauvoir"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "born", "to": "Paris, France"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "died", "to": "Paris, France"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "awarded", "to": "Nobel Prize For Literature"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "educated", "to": "\u00c9cole Normale Sup\u00e9rieure"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "associated_with", "to": "Existentialism"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "author", "to": "Being And Nothingness"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "author", "to": "Existentialism Is A Humanism"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "founded", "to": "Socialisme Et Libert\u00e9"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "participated_in", "to": "World War Ii"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "taught_at", "to": "Lyc\u00e9e Pasteur"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "taught_at", "to": "Lyc\u00e9e Condorcet"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "taught_at", "to": "Lyc\u00e9e De Le Havre"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "taught_at", "to": "Lyc\u00e9e De Laon"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "associated_with", "to": "Continental Philosophy"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "associated_with", "to": "Phenomenology"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "associated_with", "to": "Western Marxism"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "associated_with", "to": "Anarchism"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "interested_in", "to": "Metaphysics"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "interested_in", "to": "Epistemology"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "interested_in", "to": "Ethics"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "interested_in", "to": "Consciousness"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "interested_in", "to": "Self-Consciousness"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "interested_in", "to": "Literature"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "interested_in", "to": "Political Philosophy"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "interested_in", "to": "Ontology"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "notable_idea", "to": "Bad Faith"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "notable_idea", "to": "Existence Precedes Essence"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "notable_idea", "to": "Nothingness"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "notable_idea", "to": "Hell Is Other People"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "notable_idea", "to": "Situation"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "notable_idea", "to": "Transcendence Of The Ego"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "notable_idea", "to": "The Imaginary"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "notable_idea", "to": "Neocolonialism"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "child_of", "to": "Jean-Baptiste Sartre"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "child_of", "to": "Anne-Marie Schweitzer"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "grandchild_of", "to": "Charles Schweitzer"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "influenced_by", "to": "Henri Bergson"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "friend", "to": "Raymond Aron"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "influenced_by", "to": "Alexandre Koj\u00e8ve"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "influenced_by", "to": "Martin Heidegger"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "collaborated_with", "to": "Maurice Merleau-Ponty"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "collaborated_with", "to": "Albert Camus"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "influenced_by", "to": "Frantz Fanon"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "admired", "to": "Che Guevara"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "met", "to": "Fidel Castro"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "upset", "to": "Gustave Lanson"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "collaborated_with", "to": "Georges Canguilhem"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "pranked", "to": "Charles Lindbergh"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "influenced_by", "to": "Louis-Ferdinand C\u00e9line"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "studied", "to": "Edmund Husserl"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "influenced_by", "to": "Emmanuel Levinas"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "met", "to": "General George C. Marshall"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "met", "to": "Andr\u00e9 Gide"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "met", "to": "Andr\u00e9 Malraux"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "opposed", "to": "Marcel D\u00e9at"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "opposed", "to": "General Otto Von St\u00fclpnagel"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "opposed", "to": "Pierre Laval"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "founded", "to": "Les Temps Modernes"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "author", "to": "The Roads To Freedom"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "author", "to": "Critique Of Dialectical Reason"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "author", "to": "The Family Idiot"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "author", "to": "L\u0027\u00catre Et Le N\u00e9ant"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "author", "to": "L\u0027Existentialisme Est Un Humanisme"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "author", "to": "L\u0027Image Dans La Vie Psychologique: R\u00f4le Et Nature"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "author", "to": "Barion\u00e0, Fils Du Tonnerre"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "author", "to": "The Flies"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "author", "to": "No Exit"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "author", "to": "Anti-Semite And Jew"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "author", "to": "Black Orpheus"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "contributed_to", "to": "L\u0027Anthologie De La Nouvelle Po\u00e9sie N\u00e8gre Et Malgache"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "contributed_to", "to": "The Wretched Of The Earth"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "author", "to": "The Words"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "declined", "to": "L\u00e9gion D\u0027Honneur"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "participated_in", "to": "May 1968 Strikes"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "buried", "to": "Cimeti\u00e8re Du Montparnasse"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "cremated", "to": "P\u00e8re-Lachaise Cemetery"}, {"arrows": "to", "from": "Jean-Paul Sartre", "label": "cause_of_death", "to": "Pulmonary Edema"}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {"physics": {"forceAtlas2Based": {"gravitationalConstant": -100, "centralGravity": 0.01, "springLength": 200, "springConstant": 0.08}, "minVelocity": 0.75, "solver": "forceAtlas2Based"}};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>
